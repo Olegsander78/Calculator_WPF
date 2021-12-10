@@ -48,7 +48,7 @@
         <Button Grid.Row="5" Grid.Column="3" x:Name="btn_add" Click="btn_oper_Click">+</Button>
         <Button Grid.Row="6" Grid.Column="3" x:Name="btn_eql" Click="btn_eql_Click">=</Button>
         
-        <Button Grid.Row="6" Grid.Column="2" x:Name="btn_comma">,</Button>
+        <Button Grid.Row="6" Grid.Column="2" x:Name="btn_comma" Click="btn_comma_Click">,</Button>
         <Button Grid.Row="6" Grid.Column="0" x:Name="btn_plminus" Click="btn_plminus_Click">+/-</Button>
         
         <!--Clear buttons-->

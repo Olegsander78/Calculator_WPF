@@ -20,8 +20,8 @@ namespace Calc
     /// </summary>
     public partial class MainWindow : Window
     {
-        int num1 = 0;
-        int num2 = 0;        
+        double num1 = 0;
+        double num2 = 0;        
         string op="";
         public MainWindow()
         {
@@ -32,18 +32,23 @@ namespace Calc
         private void btn_num_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
-            String str= button.Content.ToString();
-            int num = Int32.Parse(str);
-
-            if (op == "")
+            String num= button.Content.ToString();
+            if (txtValue.Text == "0")
             {
-                num1 = num1 * 10 + num;
-                txtValue.Text = num1.ToString();
+                txtValue.Text = num;
             }
             else
             {
-                num2 = num2 * 10 + num;
-                txtValue.Text = num2.ToString();
+                txtValue.Text += num;
+            }
+
+            if (op == "")
+            {
+                num1 = Double.Parse(txtValue.Text);
+            }
+            else
+            {
+                num2 = Double.Parse(txtValue.Text);
             }
             
         }
@@ -52,11 +57,12 @@ namespace Calc
         {
             Button button = (Button)sender;
             op = button.Content.ToString();
+            txtValue.Text = "0";
         }
 
         private void btn_eql_Click(object sender, RoutedEventArgs e)
         {
-            int result = 0;
+            double result = 0;
             switch (op)
             {
                 case "+":
@@ -81,15 +87,16 @@ namespace Calc
                     result = (num1 + num2) / 2;
                     break;
                 case "x^y":
-                    result = Pow(num1, num2);
+                    result = Pow(num1, (int)num2);
                     break;
             }
             txtValue.Text = result.ToString();
             op = "";
             num1 = result;
+            num2 = 0;
         }
 
-        private int Pow(int x, int y)
+        private double Pow(double x, int y)
         {
             if (y == 0) return 1;
 
@@ -119,16 +126,29 @@ namespace Calc
 
         private void btn_BSpace_Click(object sender, RoutedEventArgs e)
         {
+            txtValue.Text = DropLastChar(txtValue.Text);
             if (op == "")
             {
-                num1 = num1 / 10;
-                txtValue.Text = num1.ToString();
+                num1 = Double.Parse(txtValue.Text);
             }
             else
             {
-                num2 = num2 / 10;
-                txtValue.Text = num2.ToString();
+                num2 = Double.Parse(txtValue.Text);
             }
+        }
+
+        private string DropLastChar(string text)
+        {
+            if (text.Length == 1) { text = "0"; }
+            else
+            {
+                text = text.Remove(text.Length - 1, 1);
+                if (text[text.Length - 1] == ',')
+                {
+                    text = text.Remove(text.Length - 1, 1);
+                }
+            }
+            return text;
         }
 
         private void btn_plminus_Click(object sender, RoutedEventArgs e)
@@ -143,6 +163,27 @@ namespace Calc
                 num2 *= -1;
                 txtValue.Text = num2.ToString();
             }
+        }
+
+        private void btn_comma_Click(object sender, RoutedEventArgs e)
+        {
+            if (op == "")
+            {
+                SetComma(num1);
+            }
+            else
+            {
+                SetComma(num2);
+            }
+        }
+
+        private void SetComma(double num1)
+        {            
+            if (txtValue.Text.Contains(','))
+            {
+                return;
+            }
+            txtValue.Text += ',';
         }
     }
 }
